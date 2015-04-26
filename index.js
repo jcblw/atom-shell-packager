@@ -12,21 +12,21 @@ module.exports = function packager (opts, cb) {
   var atomShellPath
 
   try {
-    atomShellPath = require.resolve('atom-shell')
+    atomShellPath = require.resolve('electron-prebuilt')
     atomShellPath = path.join(atomShellPath, '..')
   } catch (e) {
     try {
-      atomShellPath = require.resolve(path.join(process.execPath, '../../lib/node_modules/atom-shell'))
+      atomShellPath = require.resolve(path.join(process.execPath, '../../lib/node_modules/electron-prebuilt'))
       atomShellPath = path.join(atomShellPath, '..')
     } catch (e) {
-      cb(new Error('Cannot find atom-shell from here, please install it from npm'))
+      cb(new Error('Cannot find electron-prebuilt from here, please install it from npm'))
     }
   }
 
   var atomPkg = require(path.join(atomShellPath, 'package.json'))
   console.error('Using atom-shell version', atomPkg.version, 'from', atomShellPath)
 
-  var atomShellApp = path.join(atomShellPath, 'dist', 'Atom.app')
+  var atomShellApp = path.join(atomShellPath, 'dist', 'Electron.app')
   var tmpDir = path.join(os.tmpdir(), 'atom-shell-packager-mac')
 
   var newApp = path.join(tmpDir, opts.name + '.app')
@@ -47,7 +47,7 @@ module.exports = function packager (opts, cb) {
   function buildMacApp () {
     var paths = {
       info1: path.join(newApp, 'Contents', 'Info.plist'),
-      info2: path.join(newApp, 'Contents', 'Frameworks', 'Atom Helper.app', 'Contents', 'Info.plist'),
+      info2: path.join(newApp, 'Contents', 'Frameworks', 'Electron Helper.app', 'Contents', 'Info.plist'),
       app: path.join(newApp, 'Contents', 'Resources', 'app')
     }
 
